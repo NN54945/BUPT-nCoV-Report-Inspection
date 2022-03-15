@@ -1,24 +1,25 @@
 name: pwsh-script
 
 on:
+  workflow_dispatch:
   schedule:
-    - cron: "0 16 * * *"
-    - cron: "0 4 * * *"
-    - cron: "0 10 * * *"
+    - cron: "8/5 0 * * *"
+    - cron: "6/5 5 * * *"
+    - cron: "8/5 12 * * *"
 
 jobs:
   run:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Daily report.
-        if: github.event.schedule == '0 16 * * *'
-        env:
-          BUPT_USERNAME: ${{ secrets.BUPT_USERNAME }}
-          BUPT_PASSWORD: ${{ secrets.BUPT_PASSWORD }}
-          DAILY_REPORT_FORM: ${{ secrets.DAILY_REPORT_FORM }}
-        run: |
-          ./daily_report.ps1
+#       - name: Daily report.
+#         if: github.event.schedule == '0 16 * * *'
+#         env:
+#           BUPT_USERNAME: ${{ secrets.BUPT_USERNAME }}
+#           BUPT_PASSWORD: ${{ secrets.BUPT_PASSWORD }}
+#           DAILY_REPORT_FORM: ${{ secrets.DAILY_REPORT_FORM }}
+#         run: |
+#           ./daily_report.ps1
       - name: Regular check report.
         env:
           IS_AT_SCHOOL: ${{ secrets.IS_AT_SCHOOL }}
