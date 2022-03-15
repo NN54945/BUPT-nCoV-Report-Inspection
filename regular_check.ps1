@@ -103,7 +103,7 @@ $res = Invoke-WebRequest -UseBasicParsing -Uri "https://app.bupt.edu.cn/xisuncov
 if ($res.StatusCode -ne 200 -or (ConvertFrom-Json $res.Content).e -ne 0) {
     Write-Host $res.Content;
     if ((ConvertFrom-Json $res.Content).m -ne "您已上报过") {
-        throw "打卡失败";
+       # throw "打卡失败";
     } else {
         Write-Host "已上报过数据，暂时无需打卡";
     }
