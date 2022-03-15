@@ -30,6 +30,8 @@ $res = Invoke-WebRequest -UseBasicParsing -Uri "https://app.bupt.edu.cn/uc/wap/l
     "password" = $env:BUPT_PASSWORD
 };
 
+# Write-Host $res.Content;
+
 if ($res.StatusCode -ne 200 -or (ConvertFrom-Json $res.Content).e -ne 0) {
     Write-Host $res.Content;
     throw "登录失败";
@@ -52,6 +54,8 @@ $res = Invoke-WebRequest -UseBasicParsing -Uri "https://app.bupt.edu.cn/xisuncov
     "Accept-Encoding"    = "gzip, deflate, br"
     "Accept-Language"    = "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6"
 };
+
+# Write-Host $res.Content;
 
 $content = ConvertFrom-Json($res.Content);
 if ($res.StatusCode -ne 200 -or $content.e -ne 0) {
@@ -94,9 +98,15 @@ $res = Invoke-WebRequest -UseBasicParsing -Uri "https://app.bupt.edu.cn/xisuncov
     "askforleave"  = 0
 };
 
+# Write-Host $res.Content;
+
 if ($res.StatusCode -ne 200 -or (ConvertFrom-Json $res.Content).e -ne 0) {
     Write-Host $res.Content;
-    throw "打卡失败";
+    if ((ConvertFrom-Json $res.Content).m -ne "您已上报过") {
+        throw "打卡失败";
+    } else {
+        Write-Host "已上报过数据，暂时无需打卡";
+    }
 }
 
 Write-Host "晨晚午检打卡成功";
